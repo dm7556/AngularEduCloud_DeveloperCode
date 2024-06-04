@@ -22,29 +22,33 @@ public class QuestionController {
 	@Autowired
 	private QuestionService questionService;
 	
+	//post question
 	@PostMapping("/")
 	public Question createQuestion(@RequestBody Question question) {
 		Question addQuestion = this.questionService.addQuestion(question);
 		return addQuestion;
 	}
 	
+	//change the question
 	@PutMapping("/")
 	public Question updateQuestion(@RequestBody Question question,@PathVariable long quesId) {
 		Question updateQuestion = this.questionService.updateQuestion(question, quesId);
 		return updateQuestion;
 	}
 	
+	//get all questions
 	@GetMapping("/")
 	public Set<Question> getAllQuestion(){
 		Set<Question> questions = this.questionService.getQuestions();
 		return questions;
 	}
-	
+	//get question by question id
 	@GetMapping("/{quesId}")
 	public Question getQuestionById(@PathVariable long quesId) {
 		Question question = this.questionService.getQuestion(quesId);
 		return question;
 	}
+	
 	
 	@GetMapping("/quiz")
 	public Set<Question> getAllQuestionByQuiz(@RequestBody Quiz quiz){
