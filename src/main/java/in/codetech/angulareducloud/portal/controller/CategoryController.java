@@ -18,7 +18,7 @@ import in.codetech.angulareducloud.portal.service.CategoryService;
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
-
+//aditya
 	@Autowired
 	private CategoryService categoryService;
 	
