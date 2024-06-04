@@ -14,6 +14,7 @@ import jakarta.persistence.Transient;
 public class Question {
 	
 	@Id
+	//id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long quesId;
 	
