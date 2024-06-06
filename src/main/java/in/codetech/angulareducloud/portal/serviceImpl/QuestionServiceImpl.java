@@ -8,8 +8,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import in.codetech.angulareducloud.portal.module.Exam.Question;
-import in.codetech.angulareducloud.portal.module.Exam.Quiz;
+import in.codetech.angulareducloud.portal.model.Exam.Question;
+import in.codetech.angulareducloud.portal.model.Exam.Quiz;
 import in.codetech.angulareducloud.portal.repository.QuestionRepository;
 import in.codetech.angulareducloud.portal.repository.QuizRepository;
 @Service
