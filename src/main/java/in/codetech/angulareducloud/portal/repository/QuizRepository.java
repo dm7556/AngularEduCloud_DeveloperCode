@@ -5,9 +5,9 @@ import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import in.codetech.angulareducloud.portal.module.Exam.Category;
-import in.codetech.angulareducloud.portal.module.Exam.Question;
-import in.codetech.angulareducloud.portal.module.Exam.Quiz;
+import in.codetech.angulareducloud.portal.model.Exam.Category;
+import in.codetech.angulareducloud.portal.model.Exam.Question;
+import in.codetech.angulareducloud.portal.model.Exam.Quiz;
 
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
 	List<Quiz> findByCategory(Category category);

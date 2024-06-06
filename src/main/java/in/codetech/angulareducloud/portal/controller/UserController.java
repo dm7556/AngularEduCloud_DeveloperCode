@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,41 +25,50 @@ import in.codetech.angulareducloud.portal.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
-	
-	//create User
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	// create User
 	@PostMapping("/")
 	public User addUser(@RequestBody User user) throws Exception {
-		//Entire role
-		Set<UserRole> roles=new HashSet<>();
-		//setting for Entity Role 
-		Role role=new Role();
+		// Entire role
+		Set<UserRole> roles = new HashSet<>();
+
+		// setting the password values
+		user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+
+		// setting for Entity Role
+		Role role = new Role();
 		role.setRoleId(14L);
 		role.setRoleName("NORMAL");
-		//setting values for userrole
+
+		// setting values for userrole
 		UserRole userRole = new UserRole();
 		userRole.setUser(user);
 		userRole.setRole(role);
-		//set then value in entire role
+		// set then value in entire role
 		roles.add(userRole);
 		User createUser = this.userService.createUser(user, roles);
+
 		return createUser;
 	}
-	
-	//Get User
+
+	// Get User
 	@GetMapping("/{username}")
 	public User retriveUserDetails(@PathVariable String username) {
 		User user = this.userService.getUser(username);
 		return user;
 	}
-	
-	//Delete User
+
+	// Delete User
 	@DeleteMapping("/{id}")
 	public void removeUser(@PathVariable long id) {
 		this.userService.deleteUser(id);
 	}
-	
+
 	@GetMapping("/")
-	public List<User> getAllUsers(){
+	public List<User> getAllUsers() {
 		List<User> allUsersDetails = this.userService.getAllUsersDetails();
 		return allUsersDetails;
 	}
