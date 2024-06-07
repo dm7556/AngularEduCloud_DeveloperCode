@@ -13,19 +13,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import in.codetech.angulareducloud.portal.serviceImpl.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
-
-
 @Component
-public class JwtAuthenticationFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
 	private JwtUtils jwtUtil;
 
+	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
@@ -79,4 +80,5 @@ public class JwtAuthenticationFilter {
 		
 		filterChain.doFilter(request, response);
 	}
+
 }
