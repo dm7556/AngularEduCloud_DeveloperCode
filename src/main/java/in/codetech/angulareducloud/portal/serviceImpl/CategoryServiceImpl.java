@@ -18,6 +18,13 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository; 
 
+	
+
+	public CategoryServiceImpl(CategoryRepository categoryRepository) {
+		super();
+		this.categoryRepository = categoryRepository;
+	}
+
 	@Override
 	public Category addCategory(Category category) {
 		// TODO Auto-generated method stub
@@ -43,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void deleteCategory(Long categoryId) {
 		// TODO Auto-generated method stub
-		
+		this.categoryRepository.deleteById(categoryId);
 	}
 
 	@Override

@@ -21,26 +21,40 @@ public class Quiz {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long qId;
-	
+
 	private String title;
-	
+
 	@Column(length = 5000)
-	private String discription;
-	
+	private String description;
+
 	private String maxMarks;
-	
+
 	private String numberOfQuestions;
-	
-	private boolean active=false;
-	
-	@ManyToOne(fetch=FetchType.EAGER)
+
+	private boolean active = false;
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Category category;
-	
+
 	@OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Question> questions = new HashSet<>();
-	
+
+	public Quiz(Long qId, String title, String description, String maxMarks, String numberOfQuestions, boolean active,
+			Category category, Set<Question> questions) {
+		super();
+		this.qId = qId;
+		this.title = title;
+		this.description = description;
+		this.maxMarks = maxMarks;
+		this.numberOfQuestions = numberOfQuestions;
+		this.active = active;
+		this.category = category;
+		this.questions = questions;
+	}
+
 	public Quiz() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -60,12 +74,12 @@ public class Quiz {
 		this.title = title;
 	}
 
-	public String getDiscription() {
-		return discription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDiscription(String discription) {
-		this.discription = discription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getMaxMarks() {
@@ -108,7 +122,12 @@ public class Quiz {
 		this.questions = questions;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+		return "Quiz [qId=" + qId + ", title=" + title + ", description=" + description + ", maxMarks=" + maxMarks
+				+ ", numberOfQuestions=" + numberOfQuestions + ", active=" + active + ", category=" + category
+				+ ", questions=" + questions + "]";
+	}
+
 	
 }

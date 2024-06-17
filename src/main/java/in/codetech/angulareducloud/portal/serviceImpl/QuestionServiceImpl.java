@@ -18,6 +18,13 @@ public class QuestionServiceImpl implements in.codetech.angulareducloud.portal.s
 	@Autowired
 	private QuestionRepository questionRepository;
 	
+	
+
+	public QuestionServiceImpl(QuestionRepository questionRepository) {
+		super();
+		this.questionRepository = questionRepository;
+	}
+
 	@Override
 	public Question addQuestion(Question question) {
 		// TODO Auto-generated method stub
@@ -61,8 +68,8 @@ public class QuestionServiceImpl implements in.codetech.angulareducloud.portal.s
 	@Override
 	public Question getQuestion(Long questionId) {
 		// TODO Auto-generated method stub
-		Object findById = this.questionRepository.findById(questionId);
-		return (Question) findById;
+		Question orElseThrow = this.questionRepository.findById(questionId).orElseThrow(null);
+		return orElseThrow;
 	}
 
 	@Override
@@ -75,6 +82,7 @@ public class QuestionServiceImpl implements in.codetech.angulareducloud.portal.s
 	@Override
 	public void deleteQuestion(Long quesId) {
 		// TODO Auto-generated method stub
+		this.questionRepository.deleteById(quesId);
 		
 	}
 

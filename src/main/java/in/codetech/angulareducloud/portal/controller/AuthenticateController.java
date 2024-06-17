@@ -1,5 +1,6 @@
 package in.codetech.angulareducloud.portal.controller;
 
+
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import in.codetech.angulareducloud.portal.Exception.UserNotFoundException;
 import in.codetech.angulareducloud.portal.config.JwtUtils;
+import in.codetech.angulareducloud.portal.config.UserDetailsServiceImpl;
 import in.codetech.angulareducloud.portal.model.JwtRequest;
 import in.codetech.angulareducloud.portal.model.JwtResponse;
 import in.codetech.angulareducloud.portal.model.User;
-import in.codetech.angulareducloud.portal.serviceImpl.UserDetailsServiceImpl;
+
 
 @RestController
 @ControllerAdvice
@@ -37,11 +39,15 @@ public class AuthenticateController {
 	@Autowired
 	private JwtUtils jwtUtils;
 	
+	
+	//generate token
 	@PostMapping("/generate-token")
-	public ResponseEntity<?> generateToken(@RequestBody JwtRequest jwtRequest) throws Exception{
+	public ResponseEntity<?> generateToken(@RequestBody JwtRequest jwtRequest) throws Exception {
 		
-		try {
-			authenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
+		
+		try { 
+			
+			authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
 			
 		}catch (UserNotFoundException e) {
 			e.printStackTrace();
@@ -50,12 +56,17 @@ public class AuthenticateController {
 			
 		}
 		
-		UserDetails UserDetails = this.userDetailsService.loadUserByUsername(jwtRequest.getUsername());
-		String token = this.jwtUtils.generateToken(UserDetails);
+		/////authenticate
+		
+		UserDetails userDetails = this.userDetailsService.loadUserByUsername(jwtRequest.getUsername());
+		String token = this.jwtUtils.generateToken(userDetails);
 		return ResponseEntity.ok(new JwtResponse(token));
+		
+		
+		
 	}
 	
-private void authenticate(String username, String password) throws Exception {
+	private void authenticate(String username, String password) throws Exception {
 		
 //		Authentication token = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 //	
@@ -100,5 +111,3 @@ private void authenticate(String username, String password) throws Exception {
 //		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 //	}
 //	return (ResponseEntity<?>)token;
-
-
