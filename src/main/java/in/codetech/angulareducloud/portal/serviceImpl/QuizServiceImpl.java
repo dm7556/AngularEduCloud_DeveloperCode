@@ -1,5 +1,6 @@
 package in.codetech.angulareducloud.portal.serviceImpl;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,13 @@ public class QuizServiceImpl implements in.codetech.angulareducloud.portal.servi
 	@Autowired
 	private QuizRepository quizRepository;
 	
+	
+
+	public QuizServiceImpl(QuizRepository quizRepository) {
+		super();
+		this.quizRepository = quizRepository;
+	}
+
 	@Override
 	public Quiz addQuiz(Quiz quiz) {
 		// TODO Auto-generated method stub
@@ -36,13 +44,22 @@ public class QuizServiceImpl implements in.codetech.angulareducloud.portal.servi
 		 Quiz existingQuiz = quizRepository.findById(qId).orElse(null);
 	        if (existingQuiz != null) {
 	            existingQuiz.setTitle(quiz.getTitle());
-	            existingQuiz.setDiscription(quiz.getDiscription());
+	            existingQuiz.setDescription(quiz.getDescription());
 	            existingQuiz.setMaxMarks(quiz.getMaxMarks());
 	            existingQuiz.setNumberOfQuestions(quiz.getNumberOfQuestions());
 	            existingQuiz.setActive(quiz.isActive());
 	            existingQuiz.setCategory(quiz.getCategory());
 	            existingQuiz.setQuestions(quiz.getQuestions());
+	         
+	            // Check if questions is null before setting
+	            if (quiz.getQuestions() != null) {
+	                existingQuiz.setQuestions(quiz.getQuestions());
+	            } else {
+	                existingQuiz.setQuestions(new HashSet<>());  // Initialize if null
+	            }
+
 	            return quizRepository.save(existingQuiz);
+	       
 	        }
 	        return null;
 	}
@@ -66,7 +83,7 @@ public class QuizServiceImpl implements in.codetech.angulareducloud.portal.servi
 	@Override
 	public void deleteQuiz(Long quizId) {
 		// TODO Auto-generated method stub
-		
+		this.quizRepository.deleteById(quizId);
 	}
 
 	@Override

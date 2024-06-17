@@ -1,8 +1,9 @@
-package in.codetech.angulareducloud.portal.serviceImpl;
+package in.codetech.angulareducloud.portal.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import in.codetech.angulareducloud.portal.Exception.UserNotFoundException;
@@ -13,14 +14,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	public UserDetails loadUserByUsername(String username) {
-		User user = this.userRepository.findByUsername(username);
-		if (user == null) {
-			throw new UserNotFoundException("User is not found with a given username: " + username);
-		} else {
-			return user;
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		User user= this.userRepository.findByUsername(username);
+		if (user==null) {
+			
+			System.out.println("User no found");
+			throw new UserNotFoundException("No user found !!");
 		}
+		
+		return user;
 	}
 
 }

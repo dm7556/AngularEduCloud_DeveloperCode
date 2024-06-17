@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +38,7 @@ public class UserController {
 	public User addUser(@RequestBody User user) throws Exception {
 		// Entire role
 		Set<UserRole> roles = new HashSet<>();
-
+		
 		// setting the password values
 		user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
 
@@ -56,9 +60,12 @@ public class UserController {
 
 	// Get User
 	@GetMapping("/{username}")
-	public User retriveUserDetails(@PathVariable String username) {
+	public ResponseEntity<User> retriveUserDetails(@PathVariable String username) {
 		User user = this.userService.getUser(username);
-		return user;
+		if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+		 return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(user);
 	}
 
 	// Delete User

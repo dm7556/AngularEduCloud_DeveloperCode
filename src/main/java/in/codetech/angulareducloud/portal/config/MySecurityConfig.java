@@ -1,7 +1,4 @@
 package in.codetech.angulareducloud.portal.config;
-
-import javax.servlet.Filter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +11,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import in.codetech.angulareducloud.portal.serviceImpl.UserDetailsServiceImpl;
 
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-//extend with a web security configure adapter
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
+
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
@@ -58,7 +55,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		        .cors()
 		        .disable()
 		        .authorizeRequests()
-		        .antMatchers("/generate-token", "/user/").permitAll()
+		        .antMatchers("/generate-token", "/api/user/").permitAll()
 		        .antMatchers(HttpMethod.OPTIONS).permitAll()
 		        .anyRequest().authenticated()
 		        .and()
@@ -69,9 +66,11 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		        
 		
 		
-		http.addFilterBefore((Filter) jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		        
 		     
 	}
 	
+	
+
 }

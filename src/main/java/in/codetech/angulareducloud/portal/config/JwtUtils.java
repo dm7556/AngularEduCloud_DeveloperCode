@@ -1,6 +1,6 @@
 package in.codetech.angulareducloud.portal.config;
 
-import java.util.Date;
+import java.util.Date;//java 8
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -14,16 +14,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtUtils {
     //Secret_key
-	private String SECRET_KEY = "examportal";
+	private String SECRET_KEY = "angulareducloud";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
+    
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);

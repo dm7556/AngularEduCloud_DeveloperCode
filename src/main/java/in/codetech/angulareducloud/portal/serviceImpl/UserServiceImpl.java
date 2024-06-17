@@ -26,25 +26,55 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRoleRepository userRoleRepository;
-	public User createUser(User user, Set<UserRole> userRoles)  {
-		User local = this.userRepository.findByUsername(user.getUsername());
-		if (local != null) {
-			System.out.println("User is already there !!");
-			throw new UserFoundException("User is found with a given userId"+user.getId());
-		} else { // user create
-			for (UserRole ur : userRoles) {
-				roleRepository.save(ur.getRole());
-			}
-			//user.setUserRoles(userRoles);
-			user.getUserRoles().addAll(userRoles);
-			local = this.userRepository.save(user);
-		}
-		return local;
+	
 
+	
+
+public UserServiceImpl(UserRepository userRepository) {
+		super();
+		this.userRepository = userRepository;
 	}
+
+
+//	public User createUser(User user, Set<UserRole> userRoles)  {
+//		User local = this.userRepository.findByUsername(user.getUsername());
+//		if (local != null) {
+//			System.out.println("User is already there !!");
+//			throw new UserFoundException("User is found with a given userId"+user.getId());
+//		} else { // user create
+//			for (UserRole ur : userRoles) {
+//				roleRepository.save(ur.getRole());
+//			}
+//			//user.setUserRoles(userRoles);
+//			user.getUserRoles().addAll(userRoles);
+//			local = this.userRepository.save(user);
+//		}
+//		return local;
+//
+//	}
+	
+	public User createUser(User user, Set<UserRole> userRoles)  {
+	    User local = this.userRepository.findByUsername(user.getUsername());
+	    if (local != null) {
+	        System.out.println("User is already there !!");
+	        throw new UserFoundException("User is found with a given userId"+user.getId());
+	    } else { // user create
+	        if (userRoles != null) {
+	            for (UserRole ur : userRoles) {
+	                roleRepository.save(ur.getRole());
+	            }
+	            //user.setUserRoles(userRoles);
+	            user.getUserRoles().addAll(userRoles);
+	        }
+	        local = this.userRepository.save(user);
+	    }
+	    return local;
+	}
+
 
 	public User getUser(String username) {
 		User getUserByUsername = this.userRepository.findByUsername(username);
+		
 		return getUserByUsername;
 	}
 
@@ -52,6 +82,7 @@ public class UserServiceImpl implements UserService {
 //		this.userRepository.findby
 //		this.roleRepository.deleteById(userId);
 //		this.userRepository.deleteById(userId);
+		this.userRepository.deleteById(userId);
 	}
 
 	@Override
